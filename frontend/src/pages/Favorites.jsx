@@ -1,8 +1,14 @@
-﻿export default function Favorites() {
+﻿import EmptyState from "../components/EmptyState";
+
+export default function Favorites() {
   return (
-    <section className="page container fade-up">
-      <h1>Favorites</h1>
-      <p>This page is coming soon.</p>
-    </section>
+    <div className="container">
+      <EmptyState
+        title="No favorites yet"
+        text="Outfits you save will be collected here."
+        to="/upload"
+        label="Find outfits"
+      />
+    </div>
   );
 }

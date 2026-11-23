@@ -1,8 +1,14 @@
-﻿export default function Wardrobe() {
+﻿import EmptyState from "../components/EmptyState";
+
+export default function Wardrobe() {
   return (
-    <section className="page container fade-up">
-      <h1>My Wardrobe</h1>
-      <p>This page is coming soon.</p>
-    </section>
+    <div className="container">
+      <EmptyState
+        title="Your wardrobe is empty"
+        text="Saved clothing items will show up here once you log in and add some."
+        to="/upload"
+        label="Add an item"
+      />
+    </div>
   );
 }

@@ -1,8 +1,14 @@
-﻿export default function CompleteOutfit() {
+﻿import EmptyState from "../components/EmptyState";
+
+export default function CompleteOutfit() {
   return (
-    <section className="page container fade-up">
-      <h1>Complete Outfit</h1>
-      <p>This page is coming soon.</p>
-    </section>
+    <div className="container">
+      <EmptyState
+        title="No outfit selected"
+        text="Pick a bottom from your recommendations to build a complete outfit with shoes and accessories."
+        to="/upload"
+        label="Start with a photo"
+      />
+    </div>
   );
 }

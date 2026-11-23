@@ -1,8 +1,14 @@
-﻿export default function Recommendations() {
+﻿import EmptyState from "../components/EmptyState";
+
+export default function Recommendations() {
   return (
-    <section className="page container fade-up">
-      <h1>Outfit Recommendations</h1>
-      <p>This page is coming soon.</p>
-    </section>
+    <div className="container">
+      <EmptyState
+        title="No recommendations yet"
+        text="Upload a clothing photo and ranked bottom-wear matches will appear here."
+        to="/upload"
+        label="Upload a photo"
+      />
+    </div>
   );
 }
