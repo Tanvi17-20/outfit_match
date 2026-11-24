@@ -11,10 +11,13 @@ function ColorChip({ color }) {
   );
 }
 
+const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : "-");
+
 export default function Analysis() {
   const { state } = useLocation();
   const file = state?.file;
   const colors = state?.colors;
+  const attrs = state?.attributes;
   const [url, setUrl] = useState(null);
 
   useEffect(() => {
@@ -24,7 +27,7 @@ export default function Analysis() {
     return () => URL.revokeObjectURL(u);
   }, [file]);
 
-  if (!file || !colors) {
+  if (!file || !colors || !attrs) {
     return (
       <div className="container">
         <EmptyState
@@ -49,7 +52,9 @@ export default function Analysis() {
 
         <div className="card analysis-panel">
           <h2>Detected attributes</h2>
+          <p>{attrs.description}</p>
           <ul className="attr-list">
+            <li><span>Clothing category</span><span>{cap(attrs.category)}</span></li>
             <li>
               <span>Dominant color</span>
               <ColorChip color={colors.dominant_color} />
@@ -62,14 +67,14 @@ export default function Analysis() {
                   : "None significant"}
               </span>
             </li>
-            <li><span>Clothing category</span><span>Pending (Phase 5)</span></li>
-            <li><span>Pattern</span><span>Pending (Phase 5)</span></li>
-            <li><span>Style</span><span>Pending (Phase 5)</span></li>
+            <li><span>Pattern</span><span>{cap(attrs.pattern)}</span></li>
+            <li><span>Style</span><span>{cap(attrs.style)}</span></li>
+            <li><span>Fit</span><span>{cap(attrs.fit)}</span></li>
           </ul>
 
           <p className="chosen">
-            Colors are measured from the center of the photo with k-means clustering, so a
-            busy background can affect them.
+            Colors are measured from the photo's pixels. Category, pattern, style and fit are
+            read by an AI vision model ({attrs.model}) and can occasionally be wrong.
             <br /><br />
             Occasion: {state.occasion || "not selected"}
             <br />
