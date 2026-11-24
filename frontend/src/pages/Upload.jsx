@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import ImageDropzone from "../components/ImageDropzone";
 import ChipSelect from "../components/ChipSelect";
+import { analyzeColors } from "../api/analysis";
 import "./Upload.css";
 
 const OCCASIONS = ["College", "Office", "Party", "Casual outing", "Date night", "Wedding", "Travel"];
@@ -13,14 +14,24 @@ export default function Upload() {
   const [error, setError] = useState("");
   const [occasion, setOccasion] = useState("");
   const [styles, setStyles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!file) {
       setError("Please upload a photo of your clothing item first.");
       return;
     }
-    // The real API call is added in Phase 4. For now we pass the data on.
-    navigate("/analysis", { state: { file, occasion, styles } });
+    setLoading(true);
+    setError("");
+    try {
+      const colors = await analyzeColors(file);
+      navigate("/analysis", { state: { file, occasion, styles, colors } });
+    } catch (err) {
+      const msg = err.response?.data?.error;
+      setError(msg || "Could not reach the server. Make sure the backend is running.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,8 +64,8 @@ export default function Upload() {
         </div>
 
         <div className="upload-submit">
-          <button className="btn btn-pink" onClick={handleAnalyze} disabled={!file}>
-            Analyze my outfit
+          <button className="btn btn-pink" onClick={handleAnalyze} disabled={!file || loading}>
+            {loading ? "Analyzing..." : "Analyze my outfit"}
           </button>
         </div>
       </div>
